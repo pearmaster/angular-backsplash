@@ -1,0 +1,34 @@
+<html ng-app="myApp">
+<head>
+  <title>Testing angular-backsplash</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.js"></script>
+  <script src="backsplash.js"></script>
+  <script>
+  angular.module('myApp', ['backsplash'])
+  .controller('MyCtrl', function ($scope, $timeout) {
+    console.log("In MyCtrl");
+    var cameraurlbase = "http://10.220.232.32/jpeg?"
+    $scope.cameraurl = cameraurlbase;
+    var i = 0;
+    $scope.$on('imageloaded', function () {
+       $timeout(function () {
+           i++;
+           $scope.cameraurl = cameraurlbase + i;
+       }, 500);
+    });
+  });  
+  </script>
+  <style>
+  #mydiv {
+    border: 2px solid green;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  </style>
+</head>
+<body ng-controller="MyCtrl">
+<div backsplash id="mydiv" url="{{cameraurl}}" mode="resize">
+</div>
+</body>
+</html>
