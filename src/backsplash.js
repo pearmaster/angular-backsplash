@@ -35,10 +35,6 @@ angular.module("backsplash", [])
             img.height = img.naturalHeight;
             img.width = img.naturalWidth;
         }
-        var xdiff = (elem[0].clientWidth - img.width) / 2;
-        var ydiff = (elem[0].clientHeight - img.height) / 2;
-        console.log("After resize", img.offsetTop);
-        img.offsetTop = ydiff;
       }
       var placeImage = function (img) {
         console.log("Placing image", img);
