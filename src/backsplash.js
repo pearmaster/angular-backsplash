@@ -7,6 +7,9 @@ angular.module("backsplash", [])
       url: '@'
     },
     link: function (scope, elem, attrs) {
+      if (scope.mode == 'fill') {
+        elem.css({overflow: "hidden"});
+      }
       var showingImg = null;
       var resize = function (img) {
         if (img == null) return;
@@ -35,6 +38,13 @@ angular.module("backsplash", [])
             img.height = img.naturalHeight;
             img.width = img.naturalWidth;
         }
+        var delta_y = (elem[0].clientHeight - img.height)/2;
+        var delta_x = (elem[0].clientWidth - img.width)/2;
+        angular.element(img).css({
+          position: 'relative',
+          top: delta_y + "px",
+          left: delta_x + "px"
+        });
       }
       var placeImage = function (img) {
         console.log("Placing image", img);
@@ -53,7 +63,7 @@ angular.module("backsplash", [])
         };
         img.src = url;
       }
-      
+
       scope.$watch('url', function () { loadImage(scope.url);});
       window.onresize = function () {
         console.log("Window was resized", showingImg);
