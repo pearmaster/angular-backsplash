@@ -15,6 +15,9 @@ angular.module("backsplash", [])
       var showingImg = null;
       var prevImg = null;
       var z = -1;
+      if (typeof scope.mode === 'undefined') {
+          scope.mode = "false";
+      }
 
       var resize = function (img) {
         if (img == null) return;
