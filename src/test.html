@@ -7,20 +7,20 @@
   angular.module('myApp', ['backsplash'])
   .controller('MyCtrl', function ($scope, $timeout) {
     console.log("In MyCtrl");
-    var cameraurlbase = "http://lorempixel.com/640/480/cats/"
-    $scope.cameraurl = cameraurlbase;
-    var i = 0;
+    var cameraurlbase = "http://lorempixel.com/800/600/business/"
+    $scope.cameraurl = cameraurlbase + "1/";
+    var i = 1;
     $scope.$on('imageloaded', function () {
        $timeout(function () {
            i++;
-           $scope.cameraurl = cameraurlbase + i;
+           $scope.cameraurl = cameraurlbase + i%10 + '/';
        }, 5000);
     });
-  });  
+  });
   </script>
   <style>
   #mydiv {
-    border: 2px solid green;
+    border: 1px solid green;
     width: 100%;
     height: 100%;
     margin: 0;
@@ -28,7 +28,7 @@
   </style>
 </head>
 <body ng-controller="MyCtrl">
-<div backsplash id="mydiv" url="{{cameraurl}}" mode="fill">
+<div backsplash id="mydiv" url="{{cameraurl}}" mode="resize" fade="true">
 </div>
 </body>
 </html>
