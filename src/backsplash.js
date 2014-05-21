@@ -16,7 +16,10 @@ angular.module("backsplash", [])
       var prevImg = null;
       var z = -1;
       if (typeof scope.mode === 'undefined') {
-          scope.mode = "false";
+        scope.mode = "false";
+      }
+      if (typeof scope.fade === 'undefined') {
+        scope.fade = 'false';
       }
 
       var resize = function (img) {
@@ -24,27 +27,27 @@ angular.module("backsplash", [])
         var containerRatio = elem[0].clientWidth/elem[0].clientHeight;
         var imageRatio = img.naturalWidth / img.naturalHeight;
         if (scope.mode == null || scope.mode == 'resize') {
-            if (imageRatio > containerRatio) {
-                img.width = elem[0].clientWidth;
-                img.height = img.width / imageRatio;
-            } else {
-                img.height = elem[0].clientHeight;
-                img.width = img.height * imageRatio;
-            }
-        } else if (scope.mode == 'stretch') {
-            img.height = elem[0].clientHeight;
+          if (imageRatio > containerRatio) {
             img.width = elem[0].clientWidth;
+            img.height = img.width / imageRatio;
+          } else {
+            img.height = elem[0].clientHeight;
+            img.width = img.height * imageRatio;
+          }
+        } else if (scope.mode == 'stretch') {
+          img.height = elem[0].clientHeight;
+          img.width = elem[0].clientWidth;
         } else if (scope.mode == 'fill') {
-            if (imageRatio < containerRatio) {
-                img.width = elem[0].clientWidth;
-                img.height = img.width / imageRatio;
-            } else {
-                img.height = elem[0].clientHeight;
-                img.width = img.height * imageRatio;
-            }
+          if (imageRatio < containerRatio) {
+            img.width = elem[0].clientWidth;
+            img.height = img.width / imageRatio;
+          } else {
+            img.height = elem[0].clientHeight;
+            img.width = img.height * imageRatio;
+          }
         } else {
-            img.height = img.naturalHeight;
-            img.width = img.naturalWidth;
+          img.height = img.naturalHeight;
+          img.width = img.naturalWidth;
         }
         var delta_y = (elem[0].clientHeight - img.height)/2;
         var delta_x = (elem[0].clientWidth - img.width)/2;
@@ -59,17 +62,23 @@ angular.module("backsplash", [])
         console.log("Placing image", img);
 
         var t = 0;
-        if (scope.fade.toLowerCase() == "true") {
-          t = 1;
-        } else if (scope.fade.toLowerCase() == "slow") {
-          t = 2;
-        } else if (scope.fade.toLowerCase() == "fast") {
-          t = 0.5;
+        if (angular.isString(scope.fade)) {
+          if (scope.fade.toLowerCase() == "true") {
+            t = 1;
+          } else if (scope.fade.toLowerCase() == "slow") {
+            t = 2;
+          } else if (scope.fade.toLowerCase() == "fast") {
+            t = 0.5;
+          } else {
+            t = parseFloat(scope.fade);
+          }
+        } else if (angular.isNumber(scope.fade)) {
+          t = scope.fade;
         }
 
         angular.element(img).css({
           opacity: 0,
-          transition: "opacity "+t+"s ease-in-out",
+          transition: "opacity "+t+"s",
           zIndex: z--
         });
         resize(img);
@@ -78,19 +87,27 @@ angular.module("backsplash", [])
         prevImg = showingImg;
         showingImg = img;
 
+        // Fade out previous image
         angular.element(prevImg).css({
-          opacity:0,
+          opacity:0
         });
-        angular.element(showingImg).css({
-          opacity:1
-        });
+        // We need to put the fade-in css into a timeout so that we make sure
+        // sure the browser places the image in the dom before starting fade-in
+        $timeout(function () {
+          angular.element(showingImg).css({
+            opacity:1
+          });
+        }, 20);
+
+        // After the previous image has faded out (we use timeout to determine
+        // this), remove the image from the dom.
         $timeout(function () {
           if (prevImg !== null) {
             console.log("Removing previous image");
             angular.element(prevImg).remove();
             prevImg = null;
           }
-        }, ((t*1000)+5));
+        }, ((t*1000)+25));
         scope.$emit('imageplaced');
       };
 
