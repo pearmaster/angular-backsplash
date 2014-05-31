@@ -78,6 +78,7 @@ angular.module("backsplash", [])
 
         angular.element(img).css({
           opacity: 0,
+          webkitTransition: "opacity "+t+"s",
           transition: "opacity "+t+"s",
           zIndex: z--
         });
