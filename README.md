@@ -11,7 +11,7 @@ An angular directive to fill a block element with an image.
    * false (default) - do not fade between images
    * fast - fade for 1/2 second
    * slow - fade for 2 seconds
-   * <number> - fade for the specified number of seconds
+   * &lt;number&gt; - fade for the specified number of seconds
  * **mode** - Changes how the container element is filled with the image.  See [a demo](http://runnable.com/U2zwn1MsJ-NOLwig/angular-backsplash-demos-for-javascript-and-angular-js) showing each mode.
    * resize - default, aspect ratio remains the same, either the height or width equals container
    * stretch - aspect ratio changes so that the image fills the container

@@ -59,7 +59,11 @@ angular.module("backsplash", [])
       };
 
       var placeImage = function (img) {
-        console.log("Placing image", img);
+
+        // This prevents us from adding a third image (and possible memory leak)
+        if (prevImg !== null) {
+            angular.element(prevImg).remove();
+        }
 
         var t = 0;
         if (angular.isString(scope.fade)) {
